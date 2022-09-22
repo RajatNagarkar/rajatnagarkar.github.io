@@ -46,7 +46,6 @@ let isWithinHour = (date1, date2) => {
     date2 = new Date(date2);
     const diff=  Math.abs(date2.getTime() - date1.getTime());
     let duration = diff / (1000 * 60 * 60);
-    alert(duration);
     if(duration < 1) {
         return true;
     }
