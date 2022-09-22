@@ -1,6 +1,6 @@
 //GettingCookie
 var view = "entry";
-var noRecord = `<tr><td style="text-align: center;" colspan="5">No Records Found</td></tr>`;
+var noRecord = `<tr><td style="text-align: center;" colspan="6">No Records Found</td></tr>`;
 var cookieData = document.cookie;
 var tHeadEntry = `<tr class="row head"><th>VEHICLE TYPE</th><th>VEHICLE NUMBER</th><th>DATE/TIME</th><th>TOLL NAME</th><th>TARIFF</th></tr>`;
 var tHeadTolls = `<tr class="row head"><th>TOLL NAME</th><th>CAR/JEEP/VAN</th><th>LCV</th><th>TRUCK/BUS</th><th>HEAVY VEHICLE</th><th>REMOVE</th></tr>`;
