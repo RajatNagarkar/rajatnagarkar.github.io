@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <script src="js/jquery.min.js"></script>
+    <script defer src="js/index.js"></script>
+    <script src="js/fetcher.js"></script>
+    <script src="js/home-page.js"></script>
+    <script src="js/add-toll.js"></script>
+    <script src="js/add-log.js"></script>
+    <script src="js/modal.js"></script>
+    <link href="css/index.css" rel="stylesheet" type="text/css">
+    <link href="css/modal.css" rel="stylesheet" type="text/css">
+    </link>
+</head>
+
+<body>
+    <header>
+        <div class="header">
+            <h1>TollGate Application</h1>
+        </div>
+    </header>
+    <div class="container">
+        <div class="table-container">
+            <div class="table-header">
+                <div class="table-control">
+                    <h3 class="table-control-item">Toll Entries/Vehicle Entries</h3>
+                    <div class="drop-down">
+                        <button id="filter" class="filter-btn table-control-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24"
+                                width="24" height="24">
+                                <path
+                                    d="M13,19.5v4.5l-6-4.5v-3.086L0,9.414v-2.414c0-1.302,.839-2.402,2-2.816v4.402l7,7v2.914l2,1.5v-2l2,1.5Zm4-7.086l7-7V3c0-1.654-1.346-3-3-3H7c-1.654,0-3,1.346-3,3v2.414l7,7v3.086l6,4.5v-7.586Zm-4-.828L6,4.586v-1.586c0-.551,.448-1,1-1h14c.552,0,1,.449,1,1v1.586l-7,7v4.414l-2-1.5v-2.914Z" />
+                            </svg>
+                        </button>
+                        <div id="dropped" class="drop-data"></div>
+                        
+                    </div>
+                    <form class="search table-control-item">
+                        <input class="search" type="search" placeholder="Search" name="search" onkeyup="searchQuery(this.value, 'entry')">
+                    </form>
+                </div>
+                <div class="table-actions">
+                    <button class="btn" id="add-vehicle-entry">Add vehicle entry</button>
+                    <button class="btn" id="add-toll-entry">Add new toll</button>
+                    <button class="btn" id="view-tolls" onclick="viewTolls()">View all tolls</button>
+                    <button class="btn" id="view-entry" onclick="viewEntry()" style="display: none;">View all Entry</button>
+                </div>
+            </div>
+            <div class="table-body" id="table-content">
+                <table id="table">
+                    <tr class="row head">
+                        <th>VEHICLE TYPE</th>
+                        <th>VEHICLE NUMBER</th>
+                        <th>DATE/TIME</th>
+                        <th>TOLL NAME</th>
+                        <th>TARIFF</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="add-vehicle-modal">
+        <div class="add-vehicle-log modal-box" style="width: 30%">
+            <span class="close"><img src="assets/icons/close.svg" alt="&times" widht="24px" height="24px"></span>
+            <div class="modal-header">
+                <h2 class="modal-heading">Add New Entry</h2>
+            </div>
+            <div class="modal-body">
+                <form class="form-add-log" id="form-add-entry" method="#">
+                    <div class="form-group">
+                        <label for="toll">Select toll name<sup style="color: red;">*</sup></label>
+                        <select class="form-select" placeholder="Vehicle Number" name="toll_name">
+                            <option value="-1" selected>Select Toll</option>
+                            <option id="tbd" value="-1">No Toll Availble</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="toll">Select vehicle type<sup style="color: red;">*</sup></label>
+                        <select class="form-select" placeholder="Vehicle Number" name="vehicleType">
+                            <option value="-1" selected>Select Toll</option>
+                            <option value="Car/Jeep/Van">Car/Jeep/Van</option>
+                            <option value="LCV">LCV</option>
+                            <option value="Truck/Bus">Truck/Bus</option>
+                            <option value="Heavy vehicle">Heavy vehicle</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="vehicle-number">Vehicle Number<sup style="color: red;">*</sup></label>
+                        <input type="text" class="form-control" placeholder="Vehicle Number" name="vehicleNumber">
+                    </div>
+                    <div class="form-group">
+                        <label for="vehicle-number">Tariff <sup style="color: red;">*</sup></label>
+                        <input type="text" class="form-control" placeholder="Tariff" name="tariff" disabled>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="submit-btn">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for adding toll -->
+    <div class="modal" id="add-toll-modal">
+        <div class="add-toll-entry modal-box" style="width: 50%;">
+            <span class="close"><img src="assets/icons/close.svg" alt="&times" widht="24px" height="24px"></span>
+            <div class="modal-header">
+                <h2 class="modal-heading">Add New Toll</h2>
+            </div>
+            <div class="modal-body">
+                <form class="form-add-log" id="form-add-toll">
+                    <div class="form-group" style="width:74%;">
+                        <label for="vehicle-number">Enter toll name<sup style="color: red;">*</sup></label>
+                        <input type="text" class="form-control" placeholder="Toll Name" name="toll-name">
+                    </div>
+                    <div class="form-group form-row">
+                        <label for="vehicle-number">Vehicle fare details <sup style="color: red;">*</sup></label>
+                        <div class="form-add-toll" id="first-toll">
+                            <select class="form-select vehicle-type-toll" placeholder="Vehicle Number" name="select-first" onchange="tollSelectManager(this.value, 0)">
+                                <option value="-1" selected>Select Toll</option>
+                                <option value="Car/Jeep/Van">Car/Jeep/Van</option>
+                                <option value="LCV">LCV</option>
+                                <option value="Truck/Bus">Truck/Bus</option>
+                                <option value="Heavy vehicle">Heavy vehicle</option>
+                            </select>
+                            <input type="text" class="form-control" placeholder="Single Journey" name="single-first">
+                            <input type="text" class="form-control" placeholder="Double Journey" name="double-first">
+                        </div>
+                    </div>
+                    <div class="form-group form-row">
+                        <div class="form-add-toll" id="second-toll">
+                            <select class="form-select vehicle-type-toll" placeholder="Vehicle Number" name="select-second" onchange="tollSelectManager(this.value, 1)">
+                                <option value="-1" selected>Select Toll</option>
+                                <option value="Car/Jeep/Van">Car/Jeep/Van</option>
+                                <option value="LCV">LCV</option>
+                                <option value="Truck/Bus">Truck/Bus</option>
+                                <option value="Heavy vehicle">Heavy vehicle</option>
+                            </select>
+                            <input type="text" class="form-control" placeholder="Single Journey" name="single-second">
+                            <input type="text" class="form-control" placeholder="Double Journey" name="double-second">
+                        </div>
+                    </div>
+                    <div class="form-group form-row">
+                        <div class="form-add-toll" id="third-toll">
+                            <select class="form-select vehicle-type-toll" placeholder="Vehicle Number" name="select-third" onchange="tollSelectManager(this.value, 2)">
+                                <option value="-1" selected>Select Toll</option>
+                                <option value="Car/Jeep/Van">Car/Jeep/Van</option>
+                                <option value="LCV">LCV</option>
+                                <option value="Truck/Bus">Truck/Bus</option>
+                                <option value="Heavy vehicle">Heavy vehicle</option>
+                            </select>
+                            <input type="text" class="form-control" placeholder="Single Journey" name="single-third">
+                            <input type="text" class="form-control" placeholder="Double Journey" name="double-third">
+                        </div>
+                    </div>
+                    <div class="form-group form-row">
+                        <div class="form-add-toll" id="fourth-toll">
+                            <select class="form-select vehicle-type-toll" placeholder="Vehicle Number" name="select-fourth" onchange="tollSelectManager(this.value, 3)">
+                                <option value="-1" selected>Select Toll</option>
+                                <option value="Car/Jeep/Van">Car/Jeep/Van</option>
+                                <option value="LCV">LCV</option>
+                                <option value="Truck/Bus">Truck/Bus</option>
+                                <option value="Heavy vehicle">Heavy vehicle</option>
+                            </select>
+                            <input type="text" class="form-control" placeholder="Single Journey" name="single-fourth">
+                            <input type="text" class="form-control" placeholder="Double Journey" name="double-fourth">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="submit-btn">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="toast" id="toast">
+    </div>
+
+</body>
+<script>
+    $(document).ready(function () {
+        $('.date').text(new Date().toLocaleString());
+    });
+</script>
+
+</html>
